@@ -12,8 +12,14 @@ app.get('/version', (req, res) => {
   res.send('hello version')
 })
 
+app.get('/health', (req, res) => {
+  // eslint-disable-next-line no-constant-condition
+  if (true) throw('error...  ')
+  res.send('ok')
+})
+
+// start app in a wrong port
 app.listen(PORT, () => {
-  this_causes_error
   // eslint-disable-next-line no-console
   console.log(`server started on port ${PORT}`)
 })
