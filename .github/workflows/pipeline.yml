@@ -4,6 +4,8 @@ on:
   push:
     branches:
       - main
+  pull_request:
+    branches: [ main, master ]    
 
 jobs:
   simple_deployment_pipeline:
@@ -19,3 +21,14 @@ jobs:
         run: npm run eslint
       - run: npm run build
       - run: npm run test
+  tag_release:
+    needs: [simple_deployment_pipeline]
+    runs-on: ubuntu-20.04
+    steps:
+      - name: Bump version and push tag
+        if: ${{ github.event_name == 'push' }}
+        uses: anothrNick/github-tag-action@1.71.0
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          DEFAULT_BUMP: patch
+          DRY_RUN: true
